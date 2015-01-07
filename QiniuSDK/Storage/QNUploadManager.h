@@ -14,6 +14,15 @@
 @class QNUploadOption;
 
 /**
+ *    转换为用户需要的url
+ *
+ *    @param url  上传url
+ *
+ *    @return 根据上传url算出代理url
+ */
+typedef NSString *(^QNUrlConvert)(NSString *url);
+
+/**
  *    上传完成后的回调函数
  *
  *    @param info 上下文信息，包括状态码，错误值
@@ -62,7 +71,8 @@ typedef NSString *(^QNRecorderKeyGenerator)(NSString *uploadKey, NSString *fileP
  *    @return 上传管理类实例
  */
 - (instancetype)initWithRecorder:(id <QNRecorderDelegate> )recorder
-            recorderKeyGenerator:(QNRecorderKeyGenerator)recorderKeyGenerator;
+            recorderKeyGenerator:(QNRecorderKeyGenerator)recorderKeyGenerator
+                    urlConverter:(QNUrlConvert)urlConverter;
 
 /**
  *    方便使用的单例方法

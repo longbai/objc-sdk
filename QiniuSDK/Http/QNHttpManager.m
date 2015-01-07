@@ -16,6 +16,7 @@
 
 @interface QNHttpManager ()
 @property (nonatomic) AFHTTPRequestOperationManager *httpManager;
+@property (nonatomic, strong) QNUrlConvert converter;
 @end
 
 static NSString *userAgent = nil;
@@ -30,9 +31,20 @@ static NSString *userAgent = nil;
 	if (self = [super init]) {
 		_httpManager = [[AFHTTPRequestOperationManager alloc] init];
 		_httpManager.responseSerializer = [AFJSONResponseSerializer serializer];
+        _converter = nil;
 	}
 
 	return self;
+}
+
+- (instancetype)initWithUrlConverter:(QNUrlConvert )converter{
+    if (self = [super init]) {
+        _httpManager = [[AFHTTPRequestOperationManager alloc] init];
+        _httpManager.responseSerializer = [AFJSONResponseSerializer serializer];
+        _converter = converter;
+    }
+    
+    return self;
 }
 
 + (QNResponseInfo *)buildResponseInfo:(AFHTTPRequestOperation *)operation
@@ -98,6 +110,9 @@ static NSString *userAgent = nil;
     withCompleteBlock:(QNCompleteBlock)completeBlock
     withProgressBlock:(QNInternalProgressBlock)progressBlock
       withCancelBlock:(QNCancelBlock)cancelBlock {
+    if (_converter != nil) {
+        url = _converter(url);
+    }
 	NSMutableURLRequest *request = [_httpManager.requestSerializer
 	                                multipartFormRequestWithMethod:@"POST"
 	                                                     URLString:url
@@ -119,6 +134,9 @@ static NSString *userAgent = nil;
     withCompleteBlock:(QNCompleteBlock)completeBlock
     withProgressBlock:(QNInternalProgressBlock)progressBlock
       withCancelBlock:(QNCancelBlock)cancelBlock {
+    if (_converter != nil) {
+        url = _converter(url);
+    }
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[[NSURL alloc] initWithString:url]];
 	if (headers) {
 		[request setAllHTTPHeaderFields:headers];

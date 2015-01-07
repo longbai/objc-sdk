@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "QNUploadManager.h"
 
 @class QNResponseInfo;
 
@@ -15,6 +16,8 @@ typedef void (^QNCompleteBlock)(QNResponseInfo *info, NSDictionary *resp);
 typedef BOOL (^QNCancelBlock)(void);
 
 @interface QNHttpManager : NSObject
+
+- (instancetype)initWithUrlConverter:(QNUrlConvert )converter;
 
 - (void)multipartPost:(NSString *)url
              withData:(NSData *)data

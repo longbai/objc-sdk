@@ -27,17 +27,18 @@
 @implementation QNUploadManager
 
 - (instancetype)init {
-	return [self initWithRecorder:nil recorderKeyGenerator:nil];
+    return [self initWithRecorder:nil recorderKeyGenerator:nil urlConverter:nil];
 }
 
 - (instancetype)initWithRecorder:(id <QNRecorderDelegate> )recorder {
-	return [self initWithRecorder:recorder recorderKeyGenerator:nil];
+	return [self initWithRecorder:recorder recorderKeyGenerator:nil urlConverter:nil];
 }
 
 - (instancetype)initWithRecorder:(id <QNRecorderDelegate> )recorder
-            recorderKeyGenerator:(QNRecorderKeyGenerator)recorderKeyGenerator {
+            recorderKeyGenerator:(QNRecorderKeyGenerator)recorderKeyGenerator
+                    urlConverter:(QNUrlConvert)urlConverter{
 	if (self = [super init]) {
-		_httpManager = [[QNHttpManager alloc] init];
+		_httpManager = [[QNHttpManager alloc] initWithUrlConverter:urlConverter];
 		_recorder = recorder;
 		_recorderKeyGen = recorderKeyGenerator;
 	}
@@ -50,7 +51,7 @@
 
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-	    sharedInstance = [[self alloc] initWithRecorder:recorder recorderKeyGenerator:recorderKeyGenerator];
+	    sharedInstance = [[self alloc] initWithRecorder:recorder recorderKeyGenerator:recorderKeyGenerator urlConverter:nil];
 	});
 
 	return sharedInstance;
