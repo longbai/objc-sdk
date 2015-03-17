@@ -12,9 +12,9 @@ NSString *const kQNUpHost = @"upload.qiniu.com";
 
 NSString *const kQNUpHostBackup = @"up.qiniu.com";
 
-NSString *const kQNUpSrcIP1 = @"183.136.139.16";
+NSString *const kQNUpIpBackup = @"183.136.139.16";
 
-// todo 通过API 判断手机网络运营商，选择联通IP99
+// todo 通过API 判断手机网络运营商，选择联通IP
 NSString *const kQNUpSrcIP2 = @"101.71.78.240";
 
 const UInt32 kQNChunkSize = 256 * 1024;

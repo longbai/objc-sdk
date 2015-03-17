@@ -11,6 +11,8 @@
 
 @interface QNHttpManager : NSObject <QNHttpDelegate>
 
+- (instancetype)initWithBackupIp:(NSString*)ip
+
 - (void)multipartPost:(NSString *)url
              withData:(NSData *)data
            withParams:(NSDictionary *)params

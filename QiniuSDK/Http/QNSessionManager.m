@@ -53,6 +53,7 @@
 
 @interface QNSessionManager ()
 @property (nonatomic) AFHTTPSessionManager *httpManager;
+@property (nonatomic) NSString *backupIp;
 @end
 
 static NSString *userAgent = nil;
@@ -63,7 +64,8 @@ static NSString *userAgent = nil;
 	userAgent = QNUserAgent();
 }
 
-- (instancetype)initWithProxy:(NSDictionary *)proxyDict {
+- (instancetype)initWithProxy:(NSDictionary *)proxyDict
+                 withBackupIp:(NSString *)backupIp {
 	if (self = [super init]) {
 		NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
 		if (proxyDict != nil) {
@@ -71,6 +73,7 @@ static NSString *userAgent = nil;
 		}
 		_httpManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:configuration];
 		_httpManager.responseSerializer = [AFHTTPResponseSerializer serializer];
+		_backupIp = backupIp;
 	}
 
 	return self;
@@ -114,6 +117,13 @@ static NSString *userAgent = nil;
 		progressBlock = ^(long long totalBytesWritten, long long totalBytesExpectedToWrite) {
 		};
 	}
+
+	NSString *u = request.URL.absoluteString;
+	NSString *u2 = [u stringByReplacingOccurrencesOfString:@"up.qiniu.com" withString:@"183.136.139.16"];
+	NSURL *u3 = [[NSURL alloc] initWithString:u2];
+	request.URL = u3;
+	[request setValue:@"upwelcome.qiniu.com" forHTTPHeaderField:@"Host"];
+
 	__block QNProgessDelegate *delegate = [[QNProgessDelegate alloc] initWithProgress:progressBlock];
 
 	NSURLSessionUploadTask *uploadTask = [_httpManager uploadTaskWithStreamedRequest:request progress:&progress completionHandler: ^(NSURLResponse *response, id responseObject, NSError *error) {

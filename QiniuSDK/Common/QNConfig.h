@@ -19,6 +19,11 @@ extern NSString *const kQNUpHost;
 extern NSString *const kQNUpHostBackup;
 
 /**
+ *    备用上传服务器Ip，当默认服务器域名解析失败时使用
+ */
+extern NSString *const kQNUpIpBackup;
+
+/**
  *    断点上传时的分片大小
  */
 extern const UInt32 kQNChunkSize;

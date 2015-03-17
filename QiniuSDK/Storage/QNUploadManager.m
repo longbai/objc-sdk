@@ -66,13 +66,13 @@
 		}
 	#endif
 		if (lowVersion) {
-			_httpManager = [[QNHttpManager alloc] init];
+			_httpManager = [[QNHttpManager alloc] initWithBackupIp:kQNUpIpBackup];
 		}
 		else {
-			_httpManager = [[QNSessionManager alloc] initWithProxy:proxyDict];
+			_httpManager = [[QNSessionManager alloc] initWithProxy:proxyDict withBackupIp: kQNUpIpBackup];
 		}
 #else
-		_httpManager = [[QNHttpManager alloc] init];
+		_httpManager = [[QNHttpManager alloc] initWithBackupIp:kQNUpIpBackup];
 #endif
 		_recorder = recorder;
 		_recorderKeyGen = recorderKeyGenerator;

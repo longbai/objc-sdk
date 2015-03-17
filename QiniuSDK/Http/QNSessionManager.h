@@ -5,7 +5,8 @@
 
 @interface QNSessionManager : NSObject <QNHttpDelegate>
 
-- (instancetype)initWithProxy:(NSDictionary *)proxyDict;
+- (instancetype)initWithProxy:(NSDictionary *)proxyDict
+                 withBackupIp:(NSString*)backupIp;
 
 - (void)multipartPost:(NSString *)url
              withData:(NSData *)data

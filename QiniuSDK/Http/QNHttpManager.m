@@ -15,14 +15,16 @@
 
 @interface QNHttpManager ()
 @property (nonatomic) AFHTTPRequestOperationManager *httpManager;
+@property (nonatomic) NSString *backupIp;
 @end
 
 @implementation QNHttpManager
 
-- (instancetype)init {
+- (instancetype)initWithBackupIp:(NSString*)ip{
 	if (self = [super init]) {
 		_httpManager = [[AFHTTPRequestOperationManager alloc] init];
 		_httpManager.responseSerializer = [AFJSONResponseSerializer serializer];
+        _backupIp = ip;
 	}
 
 	return self;
@@ -55,6 +57,14 @@
 - (void)  sendRequest:(NSMutableURLRequest *)request
     withCompleteBlock:(QNCompleteBlock)completeBlock
     withProgressBlock:(QNInternalProgressBlock)progressBlock {
+    
+    
+    NSString *u = request.URL.absoluteString;
+    NSString *u2 = [u stringByReplacingOccurrencesOfString:@"up.qiniu.com" withString:@"183.136.139.16"];
+    NSURL *u3 = [[NSURL alloc] initWithString:u2];
+    request.URL = u3;
+    [request setValue:@"upwelcome2.qiniu.com" forHTTPHeaderField:@"Host"];
+    
 	__block NSDate *startTime = [NSDate date];
 	AFHTTPRequestOperation *operation = [_httpManager
 	                                     HTTPRequestOperationWithRequest:request
